@@ -23,7 +23,7 @@ public class InMemoryVehiclePersistence implements VehiclePersistence {
 
     @Override
     public List<Vehicle> findAll() {
-        List<Vehicle> results = new ArrayList<>(vehicles.size());
+        var results = new ArrayList<>(vehicles.size());
         vehicles.values().forEach( v -> results.add(v));
         return results;
     }

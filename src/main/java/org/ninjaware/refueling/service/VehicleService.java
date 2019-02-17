@@ -13,25 +13,25 @@ public class VehicleService {
     private VehiclePersistence persistence;
 
     public Vehicle findVehicleByid(String uuid) {
-        Vehicle vehicle = persistence.findById(uuid);
+        var vehicle = persistence.findById(uuid);
         return vehicle;
     }
 
 
     public List<Vehicle> findAll() {
-        List<Vehicle> vehicles = persistence.findAll();
+        var vehicles = persistence.findAll();
         return vehicles;
     }
 
 
     public Vehicle save(Vehicle vehicle) {
-        Vehicle v = persistence.save(vehicle);
+        var v = persistence.save(vehicle);
         return v;
     }
 
 
     public Long delete(String uuid) {
-        Long deleteCount = persistence.delete(uuid);
+        var deleteCount = persistence.delete(uuid);
         return deleteCount;
     }
 }
