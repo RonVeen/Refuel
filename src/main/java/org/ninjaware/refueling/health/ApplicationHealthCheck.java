@@ -12,8 +12,7 @@ public class ApplicationHealthCheck implements HealthCheck {
 
     @Override
     public HealthCheckResponse call() {
-        return HealthCheckResponse.named("VehicleCheck")
-                                  .withData("Extra", "Data")
+        return HealthCheckResponse.named("VehicleServices")
                                   .up().build();
     }
 }
