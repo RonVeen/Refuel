@@ -1,15 +1,73 @@
 package org.ninjaware.refueling.model;
 
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.Id;
+
 import java.time.LocalDateTime;
 
+@Entity("vehicles")
 public class Vehicle {
 
+    @Id
     private String uuid;
     private String registration;
     private String description;
     private boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public static class Builder {
+
+        private String uuid;
+        private String registration;
+        private String description;
+        private boolean active;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+        public Builder withUuid(String uuid) {
+            this.uuid = uuid;
+            return this;
+        }
+
+        public Builder withRegistration(String registration) {
+            this.registration = registration;
+            return this;
+        }
+
+
+        public Builder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder withActive(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder  withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Vehicle build() {
+            Vehicle vehicle = new Vehicle();
+            vehicle.setUuid(this.uuid);
+            vehicle.setRegistration(this.registration);
+            vehicle.setDescription(this.description);
+            vehicle.setActive(this.active);
+            vehicle.setCreatedAt(this.createdAt);
+            vehicle.setUpdatedAt(this.updatedAt);
+            return vehicle;
+        }
+
+    }
 
     public Vehicle() {
     }

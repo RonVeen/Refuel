@@ -10,7 +10,7 @@ import java.util.List;
 public class VehicleService {
 
     @Inject
-    private VehiclePersistence persistence;
+    private @MongoPersistence  VehiclePersistence persistence;
 
     public Vehicle findVehicleByid(String uuid) {
         var vehicle = persistence.findById(uuid);

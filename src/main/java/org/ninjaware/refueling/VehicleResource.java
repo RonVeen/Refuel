@@ -10,8 +10,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 @RequestScoped
 @Path("vehicle")
@@ -24,9 +24,9 @@ public class VehicleResource {
     @GET
     public Response getVehicles() {
         var vehicleList = vehicleService.findAll();
-        var list = new GenericEntity<List<Vehicle>>(vehicleList) {
+        var list = new GenericEntity<>(vehicleList) {
         };
-        return Response.accepted(list).build();
+        return Response.ok(list).build();
     }
 
     @GET
@@ -41,15 +41,18 @@ public class VehicleResource {
 
     @POST
     public Response addVehicle(String jsonBody) {
-        var resultJson = upsertVehicle(jsonBody);
-        return Response.status(201).entity(resultJson).build();
+        var createdVehicle = upsertVehicle(jsonBody);
+        URI createdUri = UriBuilder.fromResource(VehicleResource.class).path(createdVehicle.getUuid()).build();
+        return Response.created(createdUri).build();
     }
 
 
     @PUT
-    public Response updateVehicle(String jsonBody) {
-        var resultJson = upsertVehicle(jsonBody);
-        return Response.ok(resultJson).build();
+    @Path("/{uuid}")
+    public Response updateVehicle(@PathParam("uuid") String uuid, String jsonBody) {
+        var updatedVehicle = upsertVehicle(uuid, jsonBody);
+        var updatedJson = JsonbBuilder.create().toJson(updatedVehicle);
+        return Response.ok(updatedJson).build();
     }
 
 
@@ -57,16 +60,21 @@ public class VehicleResource {
     @Path("/{uuid}")
     public Response deleteVehicle(@PathParam("uuid") String uuid) {
         var deleteCount = vehicleService.delete(uuid);
-        return (deleteCount > 0 ? Response.ok() : Response.status(Response.Status.NOT_FOUND)).build();
+        return Response.status(deleteCount > 0 ? Response.Status.NO_CONTENT : Response.Status.NOT_FOUND).build();
 
     }
 
 
-    private String upsertVehicle(String jsonBody) {
-        var vehicle = JsonbBuilder.create().fromJson(jsonBody, Vehicle.class);
-        var updatedVehicle = vehicleService.save(vehicle);
-        return JsonbBuilder.create().toJson(updatedVehicle);
 
+    private Vehicle upsertVehicle(String jsonBody) {
+        return upsertVehicle(null, jsonBody);
+    }
+
+
+    private Vehicle upsertVehicle(String uuid, String jsonBody) {
+        var vehicle = JsonbBuilder.create().fromJson(jsonBody, Vehicle.class);
+        vehicle.setUuid(uuid);
+        return vehicleService.save(vehicle);
     }
 
 

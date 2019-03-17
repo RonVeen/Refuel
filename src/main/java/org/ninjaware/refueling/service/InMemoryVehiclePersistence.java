@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 
+
 @ApplicationScoped
+@MemoryPersistence
 public class InMemoryVehiclePersistence implements VehiclePersistence {
 
     private Map<String, Vehicle> vehicles = new HashMap<>();
@@ -23,7 +25,7 @@ public class InMemoryVehiclePersistence implements VehiclePersistence {
 
     @Override
     public List<Vehicle> findAll() {
-        var results = new ArrayList<>(vehicles.size());
+        var results = new ArrayList<Vehicle>(vehicles.size());
         vehicles.values().forEach( v -> results.add(v));
         return results;
     }
