@@ -2,13 +2,14 @@ package org.ninjaware.refueling.service;
 
 import com.mongodb.MongoClient;
 import dev.morphia.Datastore;
-import dev.morphia.Key;
 import dev.morphia.Morphia;
 import dev.morphia.query.Query;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.ninjaware.refueling.model.Vehicle;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +22,18 @@ public class MongoVehiclePersistence implements VehiclePersistence {
     private Morphia morphia;
     private Datastore datastore;
 
+    @Inject
+    @ConfigProperty(name = "mongo.host")
+    private String host;
+    @Inject
+    @ConfigProperty(name = "mongo.port")
+    private Integer port;
+
     @PostConstruct
     public void setup() {
         morphia = new Morphia();
         morphia.mapPackage("org.ninjaware.refueling.model");
-        MongoClient mongoClient = new MongoClient();
+        MongoClient mongoClient = new MongoClient(host, port);
         datastore = morphia.createDatastore(mongoClient, "vehicles");
 
     }

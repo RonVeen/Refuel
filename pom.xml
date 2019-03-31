@@ -76,7 +76,15 @@
             <artifactId>jsonb-1.0</artifactId>
             <type>esa</type>
             <scope>provided</scope>
-        </dependency>        <dependency>
+        </dependency>
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>mpConfig-1.2</artifactId>
+            <version>19.0.0.1</version>
+            <type>esa</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.openliberty.features</groupId>
             <artifactId>mpHealth-1.0</artifactId>
             <version>19.0.0.1</version>
